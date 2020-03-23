@@ -1,0 +1,72 @@
+﻿@using ecommerceED1_2.Utils
+@model IEnumerable<ecommerceED1_2.Models.FarmacosPedidos>
+
+@{
+
+
+    ViewBag.Title = "Pedidos";
+}
+
+@using (Html.BeginForm())
+{
+    <div class="container mt-4">
+        <div class="col">
+            <h2>Area de Pedidos</h2>
+            <hr />
+            <div class="row">
+                <div class="col-sm-3">
+                    <h4 class="page-header">Escriba sus datos</h4>
+                    <form role="form">
+                        <div class="form-group float-label-control">
+                            <label>Nombre</label>
+                            <input type="text" name="Nombre" class="form-control" placeholder="Nombre">
+                        </div>
+                        <div class="form-group float-label-control">
+                            <label>Direccion</label>
+                            <input type="text" name="Direccion" class="form-control" placeholder="Nombre">
+                        </div>
+                        <div class="form-group float-label-control">
+                            <label>Nit</label>
+                            <input type="text" name="Nit" class="form-control" placeholder="Nombre">
+                        </div>
+                        <div class="form-group float-label-control">
+                            <label>Total a Cancelar</label>
+                            <label class="alert-info">$ @Storage.Instance.totalACancelar</label>
+                        </div>
+                    </form>
+
+                    <div class="form-group">
+                        <input type="submit" value="Realizar Pedido" class="btn btn-primary btn btn-block" />
+                    </div>
+                </div>
+
+                <div @if (Model.Count() > 0) { foreach (var item in Model) { <div class="col-md-3">
+    <div class="card text-white bg-info mb-3 ">
+        <div class="card-header">@item.FarmacoPedido.nombreFarmaco</div>
+        <div class="card-body">
+            <h5 class="card-title"><label>Precio: </label> <label class="alert-warning">  $@item.FarmacoPedido.precio</label></h5>
+            <p class="card-text">@item.FarmacoPedido.descripcionFarmaco</p>
+            <label>Cantidad: @item.cantidadSolicitada</label>
+        </div>
+    </div>
+</div>
+                    }
+                }
+                else
+                {
+
+                                <div class="col-md-8">
+                                    <h1 class="display-4">Area de Pedidos Vacia<i class="fas fa-cart-arrow-down"> </i></h1>
+
+                                </div>
+
+                }
+
+            </div>
+        </div>
+    </div>
+}
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
