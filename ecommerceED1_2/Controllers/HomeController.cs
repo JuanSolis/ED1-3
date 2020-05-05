@@ -20,6 +20,7 @@ namespace ecommerceED1_2.Controllers
         public ActionResult Index(HttpPostedFileBase file)
         {
 
+            
             var fileName = string.Empty;
             var path = string.Empty;
             if (file.ContentLength > 0)
@@ -29,22 +30,19 @@ namespace ecommerceED1_2.Controllers
                 file.SaveAs(path);
             }
 
+            // Leer el archivo subido
             reader myReader = new reader(Server.MapPath("~/App_Data/uploads/" + fileName));
-            ArbolBB arbolBinario = new ArbolBB();
-            Nodo<String, int> primerNodo = new Nodo<string, int>();
-            primerNodo.nomFarmaco = Storage.Instance.listaFarmacos[0].nombreFarmaco;
-            primerNodo.lineaArchivo = (Storage.Instance.listaFarmacos[0].id + 1);
 
-            Nodo<string, int> raiz = arbolBinario.InsertarNodo(primerNodo.lineaArchivo, primerNodo.nomFarmaco, null);
 
-            foreach (var farmacos in Storage.Instance.listaFarmacos)
+            // Recorre la lista de farmacos y agrega los nodos con nombre y linea al arbolAVL.
+            foreach(var Item in Storage.Instance.listaFarmacos)
             {
-                arbolBinario.InsertarNodo(farmacos.id, farmacos.nombreFarmaco, raiz);
+                Nodo<string, int> nodo = new Nodo<string, int>(Item.nombreFarmaco, (Item.id), null);
 
+                Storage.Instance.arbolAVL.Add(nodo);
             }
-            //Prueba para saber que el arbol esta bien
-            //arbolBinario.Tranversal(raiz);
-
+           
+            
             return RedirectToAction("Farmacos");
         }
 
@@ -52,6 +50,7 @@ namespace ecommerceED1_2.Controllers
 
         public ActionResult Farmacos(int page = 1)
         {
+            // Paginacion, 35 elementos por pagina
             var paginacionFarmacos = new paginacionFarmacos
             {
                 BlogPerPage = 35,
@@ -67,6 +66,8 @@ namespace ecommerceED1_2.Controllers
 
             int idFarmaco = Convert.ToInt32(id);
             int cantidad = int.Parse(collection[("CantidadFarmaco_" + id)]);
+
+            // Obteniene la informacion del farmaco agregado
             Farmacos farmacoAgregado = new Farmacos
             {
                 id = Storage.Instance.listaFarmacos[(idFarmaco - 1)].id,
@@ -83,6 +84,7 @@ namespace ecommerceED1_2.Controllers
                 cantidadSolicitada = cantidad
             };
 
+            // Y lo adjunta al carrito 
             Storage.Instance.totalACancelar += farmacoPedido.calcularTotal();
             Storage.Instance.pedidosFarmacos.Add(farmacoPedido);
 
@@ -98,6 +100,7 @@ namespace ecommerceED1_2.Controllers
         [HttpGet]
         public ActionResult EditFarmacos(string id)
         {
+            // Obtiene el id del farmaco por la url y manda el farmaco como modelo
             int _id = int.Parse(id);
             return View(Storage.Instance.listaFarmacos[(_id - 1)]);
         }
@@ -105,14 +108,34 @@ namespace ecommerceED1_2.Controllers
         [HttpPost]
         public ActionResult EditFarmacos(string id, FormCollection collection)
         {
+            //Edita el farmaco y redirecciona a la vista de Farmacos
             int _id = int.Parse(id);
             int nuevaExistencia = int.Parse(collection["CantidadFarmaco"]);
             Storage.Instance.listaFarmacos[(_id - 1)].existencia = nuevaExistencia;
             return RedirectToAction("Farmacos");
         }
 
+        [HttpGet]
+        public ActionResult busquedaFarmacos(int id)
+        {
+            // Lee el id por la url y lo manda el farmaco como modelo 
+            return View(Storage.Instance.listaFarmacos[(id - 1)]);
+        }
+
+        [HttpPost]
+        public ActionResult busquedaFarmacos(FormCollection collection)
+        {
+            // Lee la informacion del FormCollection y redirecciona a la vista de busquedaFarmac
+            string _nombreFarmaco = collection["farmacoBuscado"];
+
+            // Realiza la busqueda en el arbolAVL y devuelve el id que es la linea donde esta ubicado en el archivo
+            int _id = Storage.Instance.arbolAVL.Search(_nombreFarmaco);
+            return Redirect("/Home/busquedaFarmacos/" + _id);
+        }
+
         public ActionResult Pedidos()
         {
+            // Manda como modelo la lista de farmacos agregados al carrito
             return View(Storage.Instance.pedidosFarmacos);
         }
 
@@ -120,6 +143,7 @@ namespace ecommerceED1_2.Controllers
         public ActionResult Pedidos(FormCollection collection)
         {
 
+            // Obtiene la informacion en el "CheckOut"
             var pedido = new Pedidos
             {
                 nombreCliente = collection["Nombre"],
@@ -127,6 +151,7 @@ namespace ecommerceED1_2.Controllers
                 nit = collection["Nit"],
             };
 
+            //Descuenta del stock los farmacos "Comprados"
             pedido.descontarStock(Storage.Instance.listaFarmacos, Storage.Instance.pedidosFarmacos);
             pedido.vaciarPedidos(Storage.Instance.pedidosFarmacos);
             Storage.Instance.totalACancelar = 0;

@@ -11,7 +11,7 @@
 </head>
 <body>
     <nav class="navbar navbar-dark bg-primary navbar-expand-sm fixed-top align-baseline">
-        <a class="navbar-brand" href="@Url.Action("Index", "Home")">Tu salud en mis manos</a>
+        <a class="navbar-brand" href=@(Storage.Instance.listaFarmacos.Count > 0 ? @Url.Action("Farmacos", "Home") : @Url.Action("Index", "Home"))> alert}>Tu salud en mis manos</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>

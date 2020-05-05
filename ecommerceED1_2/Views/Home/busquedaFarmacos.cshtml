@@ -1,0 +1,82 @@
+﻿@model ecommerceED1_2.Models.Farmacos
+@{
+    ViewBag.Title = "busquedaFarmacos";
+}
+
+
+
+<div class="container mt-4">
+    <h2>busquedaFarmacos</h2>
+    <div class="row">
+        <div class="table-responsive">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th> ID</th>
+                        <th> Nombre Farmaco</th>
+                        <th> Descripcion Farmaco</th>
+                        <th> Casa Productora</th>
+                        <th> Precio</th>
+                        <th> Existencia</th>
+                        <th>Cantidad Deseada</th>
+                        <th>Agregar a Pedido</th>
+                        <th>Inventario</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+
+                    <tr class="@(Model.existencia > 0 ? "text-center table-secondary" : "text-center table-danger")">
+                        <td class="">
+                            @Model.id
+                        </td>
+                        <td>
+                            @Model.nombreFarmaco
+                        </td>
+                        <td>
+                            @Model.descripcionFarmaco
+                        </td>
+                        <td>
+                            @Model.casaProductora
+                        </td>
+                        <td>
+                            @Model.precio
+                        </td>
+                        <td class="">
+                            <label> @Model.existencia </label>
+                        </td>
+                        <form method="post" action="/Home/Farmacos/@Model.id?page=1">
+                            <td>
+                                <input type="number" class="form-control form-control-sm" name="CantidadFarmaco_@Model.id" value="0" min="1" max="@Html.DisplayFor(modelItem => Model.existencia)">
+                            </td>
+                            <td>
+                                <p data-placement="top" data-toggle="tooltip" title="add">
+
+                                    <button class="btn btn-success btn-xs" @(Model.existencia <= 0 ? "disabled" : "") type="submit">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+
+                                </p>
+                            </td>
+                        </form>
+
+                        <td>
+                            <p data-placement="top" data-toggle="tooltip" title="Edit">
+                                <a href="/Home/EditFarmacos/@Model.id">
+                                    <button class="btn btn-primary btn-xs" @(Model.existencia != 0 ? "disabled" : "") type="submit">
+                                        <i class="fas fa-pen"></i>
+                                    </button>
+                                </a>
+
+                            </p>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

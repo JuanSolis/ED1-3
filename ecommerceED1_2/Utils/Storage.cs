@@ -19,10 +19,11 @@ namespace ecommerceED1_2.Utils
                 return _instance;
             }
         }
-
+        public ArbolAVL<string, int> arbolAVL = new ArbolAVL<string, int>();
         public List<Farmacos> listaFarmacos = new List<Farmacos>();
         public List<FarmacosPedidos> pedidosFarmacos = new List<FarmacosPedidos>();
         public double totalACancelar = 0;
 
+       
     }
 }

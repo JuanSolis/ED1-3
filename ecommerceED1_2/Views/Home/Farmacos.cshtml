@@ -14,6 +14,19 @@
 
 <div class="container  mt-4">
 
+    <div class="col-sm-8">
+        <h4 class="page-header">Buscar farmaco por nombre</h4>
+        <form role="form" method="post" action="/Home/busquedaFarmacos">
+            <div class="form-group float-label-control">
+                <input class="form-control" name="farmacoBuscado" type="text" placeholder="Search" aria-label="Search">
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Buscar" class="btn btn-primary btn btn-block" />
+            </div>
+        </form>
+    </div>
+
     <div class="row">
         <h4>Lista de Farmacos</h4>
 

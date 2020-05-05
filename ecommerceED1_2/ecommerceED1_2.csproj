@@ -132,9 +132,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\ArbolBB.cs" />
+    <Compile Include="Models\ArbolAVL.cs" />
     <Compile Include="Models\Farmacos.cs" />
     <Compile Include="Models\FarmacosPedidos.cs" />
+    <Compile Include="Models\INodo.cs" />
     <Compile Include="Models\IPedidos.cs" />
     <Compile Include="Models\Nodo.cs" />
     <Compile Include="Models\paginacionFarmacos.cs" />
@@ -285,6 +286,7 @@
     <Content Include="Views\Home\Farmacos.cshtml" />
     <Content Include="Views\Home\Pedidos.cshtml" />
     <Content Include="Views\Home\EditFarmacos.cshtml" />
+    <Content Include="Views\Home\busquedaFarmacos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\" />

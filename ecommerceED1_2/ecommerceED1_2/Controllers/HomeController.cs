@@ -29,19 +29,25 @@ namespace ecommerceED1_2.Controllers
                 file.SaveAs(path);
             }
 
+            ArbolAVL<string, int> arbol = new ArbolAVL<string, int>();
+
             reader myReader = new reader(Server.MapPath("~/App_Data/uploads/" + fileName));
-            ArbolBB arbolBinario = new ArbolBB();
-            Nodo<String, int> primerNodo = new Nodo<string, int>();
-            primerNodo.nomFarmaco = Storage.Instance.listaFarmacos[0].nombreFarmaco;
-            primerNodo.lineaArchivo = (Storage.Instance.listaFarmacos[0].id + 1);
 
-            Nodo<string, int> raiz = arbolBinario.InsertarNodo(primerNodo.lineaArchivo, primerNodo.nomFarmaco, null);
 
-            foreach (var farmacos in Storage.Instance.listaFarmacos)
-            {
-                arbolBinario.InsertarNodo(farmacos.id, farmacos.nombreFarmaco, raiz);
+            ArbolAVL<string, int> arbolAVL = new ArbolAVL<string, int>();
+        
 
-            }
+            //Nodo<string, int> primerNodo = new Nodo<string, int>(Storage);
+            //primerNodo.nomFarmaco = Storage.Instance.listaFarmacos[0].nombreFarmaco;
+            //primerNodo.lineaArchivo = (Storage.Instance.listaFarmacos[0].id + 1);
+
+
+
+            //foreach (var farmacos in Storage.Instance.listaFarmacos)
+            //{
+            //    arbolBinario.InsertarNodo(farmacos.id, farmacos.nombreFarmaco, raiz);
+
+            //}
             //Prueba para saber que el arbol esta bien
             //arbolBinario.Tranversal(raiz);
 
